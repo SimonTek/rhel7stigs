@@ -1,0 +1,18 @@
+#!/bin/bash
+# RHEL-07-020211
+#
+# SELINUXTYPE=targeted 
+
+if grep SELINUXTYPE /etc/selinux/config |grep targeted; then
+echo "This machine is RHEL-07-020211 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020211 Compliant"
+else
+echo "This machine isn't RHEL-07-020211 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020211 Compliant"
+        if grep -r "SELINUXTYPE=" /etc/selinux/config; then
+        sed -i 's/SELINUXTYPE=.*/SELINUXTYPE=targeted/g' /etc/selinux/config
+        sed -i 's@#SELINUXTYPE=.*@SELINUXTYPE=targeted@g' /etc/selinux/config
+        else
+        echo "SELINUXTYPE=targeted" > /etc/selinux/config
+        fi
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+# RHEL-07-020170
+# blkid 
+#/dev/sda1: UUID=" ab12c3de-4f56-789a-8f33-3850cc8ce3a2 
+#" TYPE="crypto_LUKS" 
+#/dev/sda2: UUID=" bc98d7ef-6g54-321h-1d24-9870de2ge1a2 
+#" TYPE="crypto_LUKS" 
+#Pseudo-file systems, such as /proc, /sys, and tmpfs, are not required to use disk encryption and are not a finding. 
+#If any other partitions do not have a type of “crypto_LUKS”, this is a finding.
+
+if blkid |grep 'crypto_LUKS'; then
+echo "This machine is RHEL-07-020170 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020170 Compliant"
+else
+echo "This machine isn't RHEL-07-020170 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020170 Compliant"
+echo "Needed to be fixed manually"
+fi
+

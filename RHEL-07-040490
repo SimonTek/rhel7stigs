@@ -1,0 +1,17 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+#Version: RHEL-07-040490
+#Severity: low
+#Rule Title: Remove lftpd
+#Version: RHEL-07-040490
+
+#Check Content: Run the following command to determine if the "lftpd" package is installed: 
+
+if rpm -q lftpd|grep "not installed"; then
+echo "This machine is RHEL-07-040490 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-040490 Compliant"
+else
+echo "This machine isn't RHEL-07-040490 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-040490 Compliant"
+yum remove lftpd -y
+fi

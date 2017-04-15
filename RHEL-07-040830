@@ -1,0 +1,23 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+
+#Version: RHEL-07-040830
+#Severity: low
+#Description: Providing the ability for remote users or systems to initiate a secure VPN connection protects information when it is transmitted over a wide area network.
+#Rule Title: The system must provide VPN connectivity for communications over untrusted networks.
+#Version: RHEL-07-040830
+
+#Check Content: Run the following command to determine if the "openswan" package is installed: 
+# rpm -q openswan
+#If the package is not installed, this is a finding.
+#Fix Text: The Openswan package provides an implementation of IPsec and IKE, which permits the creation of secure tunnels over untrusted networks. The "openswan" package can be installed with the following command: 
+# yum install openswan
+
+if rpm -qa |egrep '(libreswan|openswan)'; then
+echo "This machine is RHEL-07-040830 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-040830 Compliant"
+else
+echo "This machine isn't RHEL-07-040830 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-040830 Compliant"
+yum install openswan -y
+fi

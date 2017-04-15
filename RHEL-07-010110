@@ -1,0 +1,22 @@
+#!/bin/bash
+# RHEL-07-010110
+# grep dcredit /etc/security/pwquality.conf
+# dcredit = -1
+# Note: The value to require a number of lower-case characters to be set is expressed as a negative number in /etc/security/pwquality.conf. 
+# Check the value for "dcredit" in /etc/security/pwquality.conf 
+
+if grep dcredit /etc/security/pwquality.conf|grep 1|grep -v '^#'; then
+echo "This machine is RHEL-07-010110 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010110 Compliant"
+else
+echo "This machine isn't RHEL-07-010110 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010110 Compliant"
+	if grep -r "dcredit" /etc/security/pwquality.conf; then
+        sed -i 's/.*dcredit.*/dcredit = -1/g' /etc/security/pwquality.conf
+        sed -i 's@# dcredit.*@dcredit = -1@g' /etc/security/pwquality.conf
+        else
+	echo "dcredit = -1" >> /etc/security/pwquality.conf
+        fi
+	
+fi
+

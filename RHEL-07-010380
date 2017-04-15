@@ -1,0 +1,15 @@
+#!/bin/bash
+# RHEL-07-010380
+# grep -i nopasswd /etc/sudoers /etc/sudoers.d/*
+# Rule Title: Users must provide a password for privilege escalation.
+#
+
+
+if grep -iv nopasswd /etc/sudoers; then
+echo "This machine is RHEL-07-010380 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010380 Compliant"
+else
+echo "This machine isn't RHEL-07-010380 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010380 Compliant"
+sed -i 's@NOPASSWD: @@g' /etc/sudoers  
+fi

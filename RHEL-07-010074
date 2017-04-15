@@ -1,0 +1,23 @@
+#!/bin/bash
+# RHEL-07-010074
+# Configure the operating system to initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces. 
+#
+#  
+
+if grep -r lock-delay=uint32 /etc/dconf/db/local.d/00-screensaver |grep 5; then
+echo "This machine is RHEL-07-010074 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010074 Compliant"
+else
+echo "This machine isn't RHEL-07-010074 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010074 Compliant"
+	if grep -r "lock-delay=uint32 5 " /etc/dconf/db/local.d/; then
+        sed -i 's/lock-delay=uint32 5 .*/lock-delay=uint32 5/g' /etc/dconf/db/local.d/00-screensaver
+        sed -i 's@#lock-delay=uint32 5 .*@lock-delay=uint32 5@g' /etc/dconf/db/local.d/00-screensaver
+        else
+	#echo "[org/gnome/desktop/screensaver]" > /etc/dconf/db/local.d/00-screensaver
+	echo "lock-delay=uint32 5 " >> /etc/dconf/db/local.d/00-screensaver
+	fi
+echo "dconf update in process"
+/usr/bin/dconf update
+
+fi

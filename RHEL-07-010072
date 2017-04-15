@@ -1,0 +1,18 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+#Version: RHEL-07-010072
+#Severity: low
+#Description: Installing "screen" ensures a console locking capability is available for users who may need to suspend console logins.
+#Rule Title: The system must allow locking of the console screen in text mode.
+#Version: RHEL-07-010072
+
+#Check Content: Run the following command to determine if the "screen" package is installed: 
+
+if rpm -q screen|grep "not installed"; then
+echo "This machine isn't RHEL-07-010072 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010072 Compliant"
+yum install screen -y
+else
+echo "This machine is RHEL-07-010072 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010072 Compliant"
+fi

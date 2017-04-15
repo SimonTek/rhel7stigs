@@ -1,0 +1,17 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+#Version: RHEL-07-040500
+#Severity: low
+#Rule Title: Remove tftp
+#Version: RHEL-07-040500
+
+#Check Content: Run the following command to determine if the "tftp" package is installed: 
+
+if rpm -q tftp|grep "not installed"; then
+echo "This machine is RHEL-07-040500 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-040500 Compliant"
+else
+echo "This machine isn't RHEL-07-040500 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-040500 Compliant"
+yum remove tftp -y
+fi

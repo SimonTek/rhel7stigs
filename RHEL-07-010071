@@ -1,0 +1,27 @@
+#!/bin/bash
+# RHEL-07-010071
+# Configure the operating system to initiate a session lock after a 15-minute period of inactivity for graphical user interfaces.
+#
+#  
+if grep -r delay /etc/dconf/db/local.d/locks/session |grep idle; then
+echo "This machine is RHEL-07-010071 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010071 Compliant"
+else
+echo "This machine isn't RHEL-07-010071 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010071 Compliant"
+        if grep -r "/org/gnome/desktop/screensaver/idle-delay" /etc/dconf/db/local.d/locks/; then
+        sed -i 's@.*/org/gnome/desktop/screensaver/idle-delay.*@/org/gnome/desktop/screensaver/idle-delay @g' /etc/dconf/db/local.d/locks/session
+        sed -i 's@#/org/gnome/desktop/screensaver/idle-delay.*@/org/gnome/desktop/screensaver/idle-delay@g' /etc/dconf/db/local.d/locks/session
+	sed -i 's@.*/org/gnome/desktop/screensaver/lock-delay.*@/org/gnome/desktop/screensaver/lock-delay@g' /etc/dconf/db/local.d/locks/session
+        sed -i 's@#/org/gnome/desktop/screensaver/lock-delay.*@/org/gnome/desktop/screensaver/lock-delay@g' /etc/dconf/db/local.d/locks/session
+	sed -i 's@.*/org/gnome/desktop/session/idle-delay.*@/org/gnome/desktop/session/idle-delay @g' /etc/dconf/db/local.d/locks/session
+        sed -i 's@#/org/gnome/desktop/session/idle-delay.*@/org/gnome/desktop/session/idle-delay@g' /etc/dconf/db/local.d/locks/session
+        else
+        echo "/org/gnome/desktop/screensaver/idle-delay" > /etc/dconf/db/local.d/locks/session
+        echo "/org/gnome/desktop/session/idle-delay" >> /etc/dconf/db/local.d/locks/session
+        echo "/org/gnome/desktop/screensaver/lock-delay" >> /etc/dconf/db/local.d/locks/session
+        fi
+echo "dconf update in process"
+/usr/bin/dconf update
+
+fi

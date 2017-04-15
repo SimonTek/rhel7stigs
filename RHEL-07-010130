@@ -1,0 +1,21 @@
+#!/bin/bash
+# RHEL-07-010130
+# grep difok /etc/security/pwquality.conf
+# difok = 8
+# Note: The value to require a number of lower-case characters to be set is expressed as 8 in /etc/security/pwquality.conf. 
+# Check the value for "difok" in /etc/security/pwquality.conf 
+
+if grep difok /etc/security/pwquality.conf|grep -v '^#'; then
+echo "This machine is RHEL-07-010130 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010130 Compliant"
+else
+echo "This machine isn't RHEL-07-010130 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010130 Compliant"
+	if grep -r "difok" /etc/security/pwquality.conf; then
+        sed -i 's/.*difok.*/difok = 8/g' /etc/security/pwquality.conf
+        sed -i 's@#difok.*@difok = 8@g' /etc/security/pwquality.conf
+        else
+	echo "difok = 8" >> /etc/security/pwquality.conf
+        fi
+	
+fi

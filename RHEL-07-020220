@@ -1,0 +1,23 @@
+#!/bin/bash
+# RHEL-07-020220
+#
+# SELINUXTYPE=targeted 
+
+#systemctl status ctrl-alt-del.service
+
+
+if [ -f /etc/systemd/system/ctrl-alt-del.target ]; then
+echo "This machine isn't RHEL-07-020220 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020220 Compliant"
+systemctl mask ctrl-alt-del.target
+	if cat /etc/dconf/db/local.d/00-disable-CAD|grep 'logout='; then
+	echo "All is good"
+	else
+	echo "[org/gnome/settings-daemon/plugins/media-keys]" >> 00-disable-CAD
+	echo "logout=’’" >> 00-disable-CAD
+	fi
+else
+echo "This machine is RHEL-07-020220 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020220 Compliant"
+fi
+

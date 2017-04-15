@@ -1,0 +1,19 @@
+#!/bin/bash
+# RHEL-07-010030
+# banner-message-enable /etc/dconf/db/local.d/*
+# banner-message-enable=true 
+
+if grep -r banner-message-enable /etc/dconf/db/local.d/* |grep true; then
+echo "This machine is RHEL-07-010030 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010030 Compliant"
+else
+echo "This machine isn't RHEL-07-010030 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010030 Compliant"
+	if grep -r "banner-message-enable" /etc/dconf/db/local.d/; then
+        sed -i 's/banner-message-enable.*/banner-message-enable true/g'/etc/dconf/db/local.d/01-banner-message
+        sed -i 's@#banner-message-enable.*@banner-message-enable true@g' /etc/dconf/db/local.d/01-banner-message
+        else
+	echo "[org/gnome/login-screen]" > /etc/dconf/db/local.d/01-banner-message
+	echo "banner-message-enable=true" >> /etc/dconf/db/local.d/01-banner-message
+        fi
+fi

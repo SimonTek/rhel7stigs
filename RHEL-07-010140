@@ -1,0 +1,22 @@
+#!/bin/bash
+# RHEL-07-010140
+# grep minclass /etc/security/pwquality.conf
+# minclass = 4
+# Note: The value to require a number of lower-case characters to be set is expressed as 4 in /etc/security/pwquality.conf. 
+# Check the value for "minclass" in /etc/security/pwquality.conf 
+
+if grep minclass /etc/security/pwquality.conf|grep 4|grep -v '^#'; then
+echo "This machine is RHEL-07-010140 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010140 Compliant"
+else
+echo "This machine isn't RHEL-07-010140 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010140 Compliant"
+	if grep -r "minclass" /etc/security/pwquality.conf; then
+        sed -i 's/.*minclass.*/minclass = 4/g' /etc/security/pwquality.conf
+        sed -i 's@# minclass.*@minclass = 4@g' /etc/security/pwquality.conf
+        else
+	echo "minclass = 4" >> /etc/security/pwquality.conf
+        fi
+	
+fi
+

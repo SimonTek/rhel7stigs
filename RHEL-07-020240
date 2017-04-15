@@ -1,0 +1,21 @@
+#!/bin/bash
+# RHEL-07-020240
+#
+# Make sure latest release
+# Red Hat Enterprise Linux Server release 7.3 (Maipo)
+
+if grep 'Red Hat Enterprise Linux' /etc/redhat-release|grep 7.3; then
+echo "This machine is RHEL-07-020240 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020240 Compliant"
+else
+echo "This machine isn't RHEL-07-020240 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020240 Compliant"
+echo "Upgrade RHEL to the newest release"
+yum  update -y
+fi
+if grep -v 'Red Hat Enterprise Linux' /etc/redhat-release ; then
+echo "Not using Red Hat Linux, Check with SA"
+else
+echo "All good"
+fi
+

@@ -1,0 +1,23 @@
+#!/bin/bash
+# RHEL-07-010070
+# Configure the operating system to initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces. 
+#
+#  
+
+if grep -r idle-delay=uint32 /etc/dconf/db/local.d/00-screensaver |grep 900; then
+echo "This machine is RHEL-07-010070 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010070 Compliant"
+else
+echo "This machine isn't RHEL-07-010070 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010070 Compliant"
+	if grep -r "idle-delay=uint32 900 " /etc/dconf/db/local.d/; then
+        sed -i 's/idle-delay=uint32 900 .*/idle-delay=uint32 900/g'/etc/dconf/db/local.d/00-screensaver
+        sed -i 's@#idle-delay=uint32 900 .*@idle-delay=uint32 900@g' /etc/dconf/db/local.d/00-screensaver
+        else
+	echo "[org/gnome/desktop/screensaver]" > /etc/dconf/db/local.d/00-screensaver
+	echo "idle-delay=uint32 900 " >> /etc/dconf/db/local.d/00-screensaver
+	fi
+echo "dconf update in process"
+/usr/bin/dconf update
+
+fi

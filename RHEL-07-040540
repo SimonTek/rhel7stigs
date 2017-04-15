@@ -1,0 +1,27 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+
+#Version: RHEL-07-040540
+#Severity: high
+#Rule Title: Remote X connections for interactive users must be encrypted.
+#Version: RHEL-07-040540
+
+#Check Content: To determine how the SSH daemon's "X11Fowarding" option is set, run the following command: 
+
+# grep -ir x11forwarding /etc/ssh/sshd_config
+
+
+if grep -i X11Fowarding /etc/ssh/sshd_config |grep -v '^#'|grep yes; then
+echo "This machine is RHEL-07-040540 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-040540 Compliant"
+else
+echo "This machine isn't RHEL-07-040540 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-040540 Compliant"
+ grep -q X11Fowarding /etc/ssh/sshd_config |grep -v yes && \
+  sed -i "s/#X11Fowarding.*/X11Fowarding yes/g" /etc/ssh/sshd_config
+if ! [ $? -eq 0 ]; then
+    echo "X11Fowarding yes" >> /etc/ssh/sshd_config
+fi
+
+
+fi

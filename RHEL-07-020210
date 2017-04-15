@@ -1,0 +1,17 @@
+#!/bin/bash
+# RHEL-07-020210
+
+if getenforce |grep Enforcing; then
+echo "This machine is RHEL-07-020210 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020210 Compliant"
+else
+echo "This machine isn't RHEL-07-020210 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020210 Compliant"
+	if grep -r "SELINUX=" /etc/selinux/config; then
+        sed -i 's/SELINUX=.*/SELINUX=enforcing/g' /etc/selinux/config
+        sed -i 's@#SELINUX=.*@SELINUX=enforcing@g' /etc/selinux/config
+        else
+	echo "SELINUX=enforcing" > /etc/selinux/config
+        fi
+/usr/sbin/setenforce 1
+fi

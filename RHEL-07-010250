@@ -1,0 +1,22 @@
+#!/bin/bash
+# RHEL-07-010250
+# grep minlen /etc/security/pwquality.conf
+# minlen = 15
+# Note: The value to require a number of lower-case characters to be set is expressed as 4 in /etc/security/pwquality.conf. 
+# Check the value for "minlen" in /etc/security/pwquality.conf 
+
+if grep minlen /etc/security/pwquality.conf|grep 15|grep -v '^#'; then
+echo "This machine is RHEL-07-010250 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010250 Compliant"
+else
+echo "This machine isn't RHEL-07-010250 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010250 Compliant"
+	if grep -r "minlen" /etc/security/pwquality.conf; then
+        sed -i 's/.*minlen.*/minlen = 15/g' /etc/security/pwquality.conf
+        sed -i 's@# minlen.*@minlen = 15@g' /etc/security/pwquality.conf
+        else
+	echo "minlen = 15" >> /etc/security/pwquality.conf
+        fi
+	
+fi
+

@@ -1,0 +1,33 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+
+#Version: RHEL-07-010240
+#Severity: medium
+#Description: Preventing reuse of previous passwords helps ensure that a compromised password is not reused by a user.
+#Rule Title: The system must prohibit the reuse of passwords within twenty-four iterations.
+#Version: RHEL-07-010240
+
+#Check Content: To verify the password reuse setting is compliant, run the following command: 
+
+#$ grep remember /etc/pam.d/system-auth
+#The output should show the following at the end of the line: 
+#remember=24
+#If it does not, this is a finding.
+#Fix Text: Do not allow users to reuse recent passwords. This can be accomplished by using the "remember" option for the "pam_unix" PAM module. In the file "/etc/pam.d/system-auth", append "remember=24" to the line which refers to the "pam_unix.so" module, as shown: 
+#password sufficient pam_unix.so [existing_options] remember=24
+#remember=5 
+
+if grep remember /etc/pam.d/system-auth|grep 5; then
+echo "This machine is RHEL-07-010240 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010240 Compliant"
+else
+echo "This machine isn't RHEL-07-010240 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010240 Compliant"
+	if grep remember /etc/pam.d/system-auth; then
+        sed -i 's@remember.*@remember=5@g' /etc/pam.d/system-auth
+        sed -i 's@remember.*@remember=5@g' /etc/pam.d/system-auth-ac
+        else
+	sed -i '/^password    sufficient/ s/$/ remember=5/' /etc/pam.d/system-auth
+	sed -i '/^password    sufficient/ s/$/ remember=5/' /etc/pam.d/system-auth-ac
+	fi
+fi

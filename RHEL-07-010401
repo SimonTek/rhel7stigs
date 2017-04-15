@@ -1,0 +1,8 @@
+#!/bin/bash
+# Rule Title: The operating system must prohibit the use of cached nss authenticators after one day.
+# STIG ID:	RHEL-07-010401
+# Rule ID:	RHEL-07-010401_rule
+# Vuln ID:	RHEL-07-010401
+# Severity:	CAT II
+
+

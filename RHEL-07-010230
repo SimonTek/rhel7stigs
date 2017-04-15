@@ -1,0 +1,30 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+
+#Version: RHEL-07-010230
+#Severity: medium
+#Description: Disabling authentication for default system accounts makes it more difficult for attackers to make use of them to compromise a system.
+#Rule Title: existing passwords must be restricted to a 60-day maximum lifetime
+#Version: RHEL-07-010230
+
+#Check Content: To obtain a listing of all users and the contents of their shadow password field, run the command: 
+#$ awk -F: '$5 > 60 {print $1}' /etc/shadow
+
+# chage -M 60 [user]
+# grep -F ":$" /etc/shadow|grep -v root| awk -F: '$5 > 60 {print $1}'
+
+if grep -F ":$" /etc/shadow|grep -v root| awk -F: '$5 > 60 {print $1}'; then
+echo "This machine is RHEL-07-010230 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010230 Compliant"
+else
+echo "This machine isn't RHEL-07-010230 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010230 Compliant"
+grep -F ":$" /etc/shadow|grep -v root| awk -F: '$5 > 60 {print $1}' > ChageNames
+
+while read p; do
+  echo "chage -M 60 $p"
+  chage -M 60 $p
+done <ChageNames
+rm ChageNames -f
+
+fi

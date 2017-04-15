@@ -1,0 +1,20 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+#Version: RHEL-07-020151
+#Severity: medium
+# grep repo_gpgcheck /etc/yum.conf 
+# repo_gpgcheck=1
+
+if grep "repo_gpgcheck" /etc/yum.conf|grep 1; then
+echo "This machine is RHEL-07-020152 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020152 Compliant"
+else
+echo "This machine isn't RHEL-07-020152 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020152 Compliant"
+        if grep -r "repo_gpgcheck" /etc/yum.conf; then
+        sed -i 's@.*repo_gpgcheck.*@repo_gpgcheck=1@g' /etc/yum.conf
+        sed -i 's@#repo_gpgcheck.*@repo_gpgcheck=1@g' /etc/yum.conf
+        else
+        echo "repo_gpgcheck=1" >> /etc/yum.conf
+        fi
+fi

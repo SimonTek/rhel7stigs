@@ -1,0 +1,19 @@
+#!/bin/bash
+# RHEL-07-010060
+# lock-enabled /etc/dconf/db/local.d/*
+# lock-enabled=true 
+
+if grep lock-enabled /etc/dconf/db/local.d/00-screensaver |grep true; then
+echo "This machine is RHEL-07-010060 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-010060 Compliant"
+else
+echo "This machine isn't RHEL-07-010060 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-010060 Compliant"
+	if grep -r "lock-enabled" /etc/dconf/db/local.d/; then
+        sed -i 's/lock-enabled.*/lock-enabled true/g'/etc/dconf/db/local.d/00-screensaver
+        sed -i 's@#lock-enabled.*@lock-enabled true@g' /etc/dconf/db/local.d/00-screensaver
+        else
+	echo "[org/gnome/desktop/screensaver]" > /etc/dconf/db/local.d/00-screensaver
+	echo "lock-enabled=true " >> /etc/dconf/db/local.d/00-screensaver
+        fi
+fi

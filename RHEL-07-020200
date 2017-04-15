@@ -1,0 +1,20 @@
+#!/bin/bash
+# RHEL-07-020200
+#
+#
+
+#Set the “clean_requirements_on_remove” option to “1” in the /etc/yum.conf file: 
+#clean_requirements_on_remove=1
+if grep "clean_requirements_on_remove" /etc/yum.conf| grep "1" ; then
+echo "This machine is RHEL-07-020200 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020200 Compliant"
+else
+echo "This machine isn't RHEL-07-020200 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020200 Compliant"
+	if grep "clean_requirements_on_remove" /etc/yum.conf; then
+	sed -i 's/clean_requirements_on_remove.*/clean_requirements_on_remove=1/g' /etc/yum.conf
+	sed -i 's@#clean_requirements_on_remove.*@clean_requirements_on_remove=1@g' /etc/yum.conf
+	else
+	echo "clean_requirements_on_remove=1" >> /etc/yum.conf
+	fi
+fi

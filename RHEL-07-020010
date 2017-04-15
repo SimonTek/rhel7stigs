@@ -1,0 +1,21 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+
+#Version: RHEL-07-020010
+#Severity: medium
+#Description: Removing the "ypserv" package decreases the risk of the accidental (or intentional) activation of NIS or NIS+ services.
+#Rule Title: The ypserv package must not be installed.
+#Version: RHEL-07-020010
+
+# rpm -q ypserv
+#If the package is installed, this is a finding.
+#Fix Text: The "ypserv" package can be uninstalled with the following command: 
+
+if rpm -q ypserv|grep "not installed"; then
+echo "This machine is RHEL-07-020010 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020010 Compliant"
+else
+echo "This machine isn't RHEL-07-020010 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020010 Compliant"
+yum erase ypserv -y
+fi

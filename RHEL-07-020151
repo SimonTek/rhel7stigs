@@ -1,0 +1,21 @@
+#!/bin/bash
+#Created by Matthew M. Conley / SimonTek
+#Version: RHEL-07-020151
+#Severity: medium
+# grep localpkg__gpgcheck /etc/yum.conf 
+#localpkg_pkg_gpgcheck=1
+
+if grep "localpkg_gpgcheck" /etc/yum.conf|grep 1; then
+echo "This machine is RHEL-07-020151 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-020151 Compliant"
+else
+echo "This machine isn't RHEL-07-020151 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-020151 Compliant"
+        if grep -r "localpkg_gpgcheck" /etc/yum.conf; then
+        sed -i 's@.*localpkg_gpgcheck.*@localpkg_gpgcheck=1@g' /etc/yum.conf
+        sed -i 's@#localpkg_gpgcheck.*@localpkg_gpgcheck=1@g' /etc/yum.conf
+        else
+        echo "localpkg_gpgcheck=1" >> /etc/yum.conf
+        fi
+fi
+

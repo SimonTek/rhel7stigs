@@ -1,0 +1,48 @@
+#!/bin/bash
+# RHEL-07-021280
+#
+# Make sure dracut-fips is Installed
+# yum list installed | grep dracut-fips 
+
+if yum list installed | grep dracut-fips; then
+echo "This machine is RHEL-07-021280 Compliant" >> /var/log/Stig
+echo "This machine is RHEL-07-021280 Compliant"
+else
+echo "This machine isn't RHEL-07-021280 Compliant" >> /var/log/Stig
+echo "This machine isn't RHEL-07-021280 Compliant"
+echo "Need to install dracut-fips"
+echo -n "This will require rebuilding the kernel, Continue? [yes or no]: "
+read yno
+case $yno in
+
+        [yY] | [yY][Ee][Ss] )
+                echo "Proceeding ahead"
+                ;;
+
+        [nN] | [n|N][O|o] )
+                echo "Not agreed, you can't proceed the installation";
+                exit 1
+                ;;
+        *) echo "Invalid input"
+            ;;
+esac
+	if grep -qw aes /proc/cpuinfo && echo Installing dracut-fips-AES || echo Without AES |grep -qv 'Without'; then
+	echo "INSTALL AES"
+	yum install dracut-fips dracut-fips-aesni -y
+	else
+	echo "DO NOT INSTALL AES"
+	yum install dracut-fips -y
+	fi
+rpm -q prelink && sed -i '/^PRELINKING/s,yes,no,' /etc/sysconfig/prelink
+rpm -q prelink && prelink -uav
+mv -v /boot/initramfs-$(uname -r).img{,.bak}
+dracut
+grubby --update-kernel=$(grubby --default-kernel) --args=fips=1
+uuid=$(findmnt -no uuid /boot)
+[[ -n $uuid ]] && grubby --update-kernel=$(grubby --default-kernel) --args=boot=UUID=${uuid}
+
+sed -i '/^GRUB_CMDLINE_LINUX=/s/"$/ fips=1"/' /etc/default/grub
+uuid=$(findmnt -no uuid /boot)
+[[ -n $uuid ]] && sed -i "/^GRUB_CMDLINE_LINUX=/s/\"$/ boot=UUID=${uuid}\"/" /etc/default/grub
+
+fi
